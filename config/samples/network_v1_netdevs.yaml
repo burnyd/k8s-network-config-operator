@@ -1,0 +1,6 @@
+apiVersion: network.networkconfigoperator/v1
+kind: NetDevs
+metadata:
+  name: netdevs-sample
+spec:
+  # Add fields here

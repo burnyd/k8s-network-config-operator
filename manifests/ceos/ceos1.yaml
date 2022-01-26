@@ -1,0 +1,71 @@
+apiVersion: network.networkconfigoperator/v1
+kind: NetDevs
+metadata:
+  name: ceos1
+  namespace: networkconfig
+spec:
+  username: admin
+  password: admin
+  host: 192.168.4.244
+  transport: http
+  port: 888
+  networkos: eos
+  runningconfig:  |+
+    transceiver qsfp default-mode 4x10G
+    !
+    service routing protocols model multi-agent
+    !
+    hostname ceos1
+    !
+    spanning-tree mode mstp
+    !
+    no aaa root
+    !
+    username admin privilege 15 role network-admin secret sha512 $6$S1jDtSEN/M3/VEsP$fNT4jByGEaYNlEnDxw4qCAyV3dsc/JH5Q7nLLStzZIo0TwUQ3aPuIO2sqVXalm8K74ccIeWQSanzAU5zT9Nj31
+    !
+    vlan 100,200,300,400,500,600
+    !
+    interface Ethernet1
+      no switchport
+      ip address 10.0.0.1/24
+    !
+    interface Loopback0
+      ip address 1.1.1.1/32
+    !
+    interface Management0
+      ip address 172.20.20.2/24
+      ipv6 address 2001:172:20:20::3/64
+    !
+    ip access-list copp
+      10 permit ip any any
+    !
+    ip routing
+    !
+    system control-plane
+      ip access-group copp in
+    !
+    router bgp 6500
+      neighbor 1.1.1.1 remote-as 1
+      neighbor 2.2.2.2 remote-as 2
+      neighbor 3.3.3.3 remote-as 3
+      neighbor 4.4.4.4 remote-as 4
+      neighbor 5.5.5.5 remote-as 5
+      neighbor 10.0.0.2 remote-as 6501
+      redistribute connected
+    !
+    router ospf 10
+      network 0.0.0.0/0 area 0.0.0.0
+      max-lsa 12000
+    !
+    management api http-commands
+      protocol http
+      no shutdown
+    !
+    management api gnmi
+      transport grpc default
+      provider eos-native
+    !
+    management api netconf
+      transport ssh default
+    !
+    end

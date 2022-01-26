@@ -1,0 +1,24 @@
+# permissions for end users to edit netdevs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: netdevs-editor-role
+rules:
+- apiGroups:
+  - network.networkconfigoperator
+  resources:
+  - netdevs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - network.networkconfigoperator
+  resources:
+  - netdevs/status
+  verbs:
+  - get

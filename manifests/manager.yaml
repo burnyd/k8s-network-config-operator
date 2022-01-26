@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: network-config-operator
+  namespace: networkconfig
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: network-config-operator
+  template:
+    metadata:
+      labels:
+        app: network-config-operator
+    spec:
+      containers:
+        - name: network-config-operator
+          image: burnyd/network-config-operator:1.0
+          imagePullPolicy: Always
+      serviceAccountName: controller-manager
