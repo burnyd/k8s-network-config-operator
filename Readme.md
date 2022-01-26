@@ -41,7 +41,7 @@ spec:
 The general idea is that a user can use their current tooling(salt, ansible etc) render a config a long with the rest of the kubernetes yaml manifest or even talk directly to the kube api and create this cr based off of tooling.
 
 I truncated this so it is east to view.  Just an example of keys within the data structure.
-```
+```shell
 apiVersion: network.networkconfigoperator/v1 # The API for the CRD
 kind: NetDevs # The CR
 metadata:
